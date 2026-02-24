@@ -1,38 +1,61 @@
-# Ρομποτική 1 - Εξαμηνιαία Εργασία
+# Robotic Arm Kinematics & Simulation
 
-**Ονοματεπώνυμο:** Νικόλαος Αδαμόπουλος  
-**ΑΜ:** 03122074
+This project implements the kinematic modeling and simulation of a 3-DOF robotic arm. It includes symbolic derivations of the forward and differential kinematics, as well as a numerical simulation of the robot executing a trajectory planned via quintic polynomials.
 
+## Project Overview
 
-## Δομή Φακέλων
+The core objective is to model a robotic manipulator using the Denavit-Hartenberg (DH) convention and simulate its motion between two points in 3D space.
 
-- `main.py`
-- `scripts/`
-  - `__init__.py`
-  - `theoretical_calculations.py`
-  - `kinematic_simulation.py`
-- `motion gifs/`
-- `report_03122074.pdf`
+Key features include:
+- **Symbolic Computation**: Automating the derivation of Homogeneous Transformation Matrices and the Geometric Jacobian using `sympy`.
+- **Forward Kinematics**: Calculating the end-effector position based on joint angles.
+- **Inverse Kinematics**: Analytically solving for joint angles given a desired end-effector position.
+- **Trajectory Planning**: Utilizing a 5th-degree (quintic) polynomial to generate smooth paths with velocity constraints.
+- **3D Visualization**: Visualizing the robot's workspace and animating its movement using `matplotlib`.
 
----
+## Folder Structure
 
-## Σύντομη περιγραφή αρχείων πέραν της αναφοράς
+- `main.py`: The entry point for running calculations and simulations.
+- `scripts/`: Contains the core logic modules.
+  - `theoretical_calculations.py`: Handles symbolic math for kinematics (DH parameters, Jacobian, etc.).
+  - `kinematic_simulation.py`: Implements the simulation loop and visualization tools.
+- `motion gifs/`: Directory for saving generated animations.
+- `report_03122074.pdf`: (Reference) Original project report in Greek.
 
-- `main.py`
-  - Κύριο αρχείο εκτέλεσης του κώδικα που χρησιμοποιείται και στα δύο μέρη της άσκησης.
-  - Περιλαμβάνει δύο βασικές συναρτήσεις:
-    - `run_theoretical_calculations()` – εκτελεί τους συμβολικούς/θεωρητικούς υπολογισμούς (προωθητική κινηματική, Ιακωβιανή, αντίστροφη διαφορική, πολυώνυμο 5ου βαθμού) που παρουσιάζονται στην αναφορά χωρίς να αναπτύσσονται πλήρως εκεί.
-    - `run_simulation()` – εκτελεί την κινηματική προσομοίωση για το Μέρος Β (ορισμός παραμέτρων, αρχικοποίηση συστήματος, κλήση συναρτήσεων προσομοίωσης και γραφημάτων).
+## Requirements
 
-- `motion gifs/`
-  - Στον φάκελο αυτό είναι αποθηκευμένα τα animation που έχουν προέλθει από τις προσομοιώσεις. Συγκεκριμένα περιλαμβάνεται ένα gif για καθεμία από τις 4 λύσεις τις αντίστροφης κινηματικής
+- Python 3.x
+- `numpy`
+- `sympy`
+- `matplotlib`
+- `tqdm`
 
----
+You can install the dependencies using pip:
+```bash
+pip install numpy sympy matplotlib tqdm
+```
 
-## Τρόπος Εκτέλεσης
+## How to Run
 
-- Για να εκτελεστεί η προσομοίωση του Μέρους Β με τις προεπιλεγμένες παραμέτρους της αναφοράς:
-  - Εκτελέστε το `main.py`. Από προεπιλογή καλεί την `run_simulation()` στο μπλοκ `if __name__ == "__main__":`.
-- Για να αναπαραχθούν οι συμβολικοί υπολογισμοί του Μέρους Α και το πολυώνυμο του Μέρους Β:
-  - Uncomment την κλήση `run_theoretical_calculations()` στο `main.py` και εκτελέστε το αρχείο.
+### 1. Run the Simulation
+To visualize the robot's motion and generate plots for position, velocity, and joint angles:
+
+```bash
+python main.py
+```
+*By default, this runs `run_simulation()`, which calculates the trajectory and displays the results.*
+
+### 2. Perform Theoretical Calculations
+To see the symbolic derivation of the kinematic matrices and polynomials:
+
+1. Open `main.py`.
+2. Uncomment the line `run_theoretical_calculations()`.
+3. Run the script:
+   ```bash
+   python main.py
+   ```
+
+## License
+This project is open-source.
+
 

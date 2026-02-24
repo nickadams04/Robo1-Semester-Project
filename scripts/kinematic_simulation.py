@@ -1,6 +1,4 @@
-# Νικόλαος Αδαμόπουλος
-# 03122074
-# Κινηματική Προσομοίωση - Μέρος Β 
+# Kinematic Simulation Module
 
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider

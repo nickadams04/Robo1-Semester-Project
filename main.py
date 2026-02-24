@@ -1,6 +1,3 @@
-# Νικόλαος Αδαμόπουλος
-# 03122074
-
 import numpy as np
 
 from scripts.theoretical_calculations import (
@@ -19,13 +16,13 @@ from scripts.kinematic_simulation import (
 )
 
 """
-Μέσω αυτού του αρχείου μπορείτε να εκτελέσετε τον κώδικα που χρησιμοποιήθηκε στα δύο μέρη της άσκησης.
+This script serves as the main entry point for the project.
 """
 
 """
-Η συνάρτηση `run_theoretical_calculations` υπολογίζει και τυπώνει τους διάφορους υπολογισμούς που 
-παραλείφθηκαν στην αναφορά, όπως η σύνθεση των πινάκων της μεθόδου DH, ο υπολογισμός της ιακωβιανής 
-και της αντίστροφής της καθώς και η επίλυση του πολυωνύμου 5ου βαθμού στο δεύτερο μέρος.
+The function `run_theoretical_calculations` performs symbolic computations
+such as the composition of DH matrices, Jacobian calculation and its inverse,
+as well as the solution of the 5th-degree polynomial trajectory generation.
 """
 def run_theoretical_calculations():
     VERBOSE = True
@@ -35,20 +32,14 @@ def run_theoretical_calculations():
     tau, s_tau, ds_tau = compute_quintic_polynomial(VERBOSE)
 
 """
-Η συνάρτηση `run_simulation` τρέχει την απαιτούμενη προσομοίωση για το μέρος Β.
-Μέσω των global μεταβλητών μπορούμε να προσαρμόσουμε μεταβλητές που θεωρούνται
-δεδομένες στους υπολογισμούς.
-Πέραν των `setup_system()` και `simulate()` που κάνουν τις απαραίτητες αρχικοποιήσεις
-και προσομοιώσεις αντίστοιχα, μπορούμε να επιλέξουμε από τρείς συναρτήσεις με γραφικά
-αποτελέσματα
+The function `run_simulation` executes the kinematic simulation.
+Global variables allow adjustment of system parameters.
+It includes initialization via `setup_system()` and execution via `simulate()`.
+Visualization options include:
 
-- `plot_reach`: Πλοτάρει την περιοχή εργασίας του βραχίονα και τα επιλεγμένα σημεία
-                Α και Β. Χρησιμο σε περίπτωση που θέλουμε να αλλάξουμε τα Α, Β.
-
-- `plot_results`: Πλοτάρει τα διαγράμματα των ζητούμενων μεγεθών.
-
-- `make_motion_gif`: Δημιουργεί το 3-διάστατο animation ολόκληρης της κίνησης καθώς
-                     και ζητούμενο το διάγραμμα με τα δείγματα της κίνησης.
+- `plot_reach`: Plots the robot's workspace and target points A & B.
+- `plot_results`: Plots position, velocity, joint angles, and angular velocities.
+- `make_motion_gif`: Generates a 3D animation of the motion.
 """
 def run_simulation():
     # Define constants (movement period, sim period, link lengths, target points)

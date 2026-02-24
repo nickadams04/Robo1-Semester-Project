@@ -1,7 +1,5 @@
-# Νικόλαος Αδαμόπουλος
-# 03122074
-# Θεωρητικοί Υπολογισμοί με sympy
-# Μέρος Α + Β
+# Theoretical Calculations with sympy
+# Symbolic derivation of Forward Kinematics, Jacobian, and Trajectory Planning
 
 """
 - Link lengths: l0, l1, l2, l3
@@ -39,10 +37,10 @@ def dh(a, d, alpha, theta):
 
 
 # ---------------------------------------------------------------------------
-# Question 1–2: DH parameters and forward kinematics A_g^e
+# DH parameters and forward kinematics A_g^e
 # ---------------------------------------------------------------------------
 
-# DH parameters as used in the report (table in Question 1)
+# DH parameters as used in the report
 # i :  a_i   d_i   alpha_i        theta_i
 DH_PARAMS = [
     (0,   l0,  sp.pi / 2,       0),     # A_0^g
@@ -53,7 +51,7 @@ DH_PARAMS = [
 
 
 def compute_forward_kinematics(VERBOSE=False):
-    # Question 2: Derive forward kinematics from DH parameters
+    # Derive forward kinematics from DH parameters
     
     A0g = dh(*DH_PARAMS[0])  # A_0^g
     A1_0 = dh(*DH_PARAMS[1])  # A_1^0
@@ -67,7 +65,7 @@ def compute_forward_kinematics(VERBOSE=False):
     Ae_g = sp.trigsimp(Ae_g)
 
     if VERBOSE:
-        print("=== Question 2: Forward kinematics A_e^g ===")
+        print("=== Forward kinematics A_e^g ===")
         print("A_0^g =")
         sp.pprint(A0g)
         print("\nA_1^0 =")
@@ -90,12 +88,12 @@ def compute_forward_kinematics(VERBOSE=False):
 
 
 # ---------------------------------------------------------------------------
-# Question 3: Differential kinematics – geometric Jacobian J(q)
+# Differential kinematics – geometric Jacobian J(q)
 # ---------------------------------------------------------------------------
 
 
 def compute_jacobian(A0g, A1_0, A2_1, Ae_2, Ae_g, VERBOSE=False):
-    # Question 3: Derive forward differential kinematics (jacobian)
+    # Derive forward differential kinematics (jacobian)
     
     # Cumulative transforms in the global frame
     A1g = sp.simplify(A0g * A1_0)
@@ -119,7 +117,7 @@ def compute_jacobian(A0g, A1_0, A2_1, Ae_2, Ae_g, VERBOSE=False):
     r_e = r3
 
     if VERBOSE:
-        print("\n=== Question 3: Intermediate frames in g ===")
+        print("\n=== Intermediate frames in g ===")
         print("A_1^g = A_0^g A_1^0 =")
         sp.pprint(A1g)
         print("\nA_2^g = A_1^g A_2^1 =")
@@ -176,7 +174,7 @@ def compute_jacobian(A0g, A1_0, A2_1, Ae_2, Ae_g, VERBOSE=False):
     J = sp.trigsimp(J)
 
     if VERBOSE:
-        print("\n=== Question 3: Jacobian columns J_{L_i}, J_{A_i} ===")
+        print("\n=== Jacobian columns J_{L_i}, J_{A_i} ===")
         print("J_{L,1} =")
         sp.pprint(JL1)
         print("\nJ_{A,1} =")
@@ -201,18 +199,18 @@ def compute_jacobian(A0g, A1_0, A2_1, Ae_2, Ae_g, VERBOSE=False):
 
 
 # ---------------------------------------------------------------------------
-# Question 4: Inverse differential kinematics and singularities
+# Inverse differential kinematics and singularities
 # ---------------------------------------------------------------------------
 
 
 def compute_inverse_differential(J_L, VERBOSE=False):
-    # Question 4: Singular configs, inverse transform
+    # Singular configs, inverse transform
     
     det_JL = sp.simplify(J_L.det())
     det_JL_factored = sp.factor(det_JL)
 
     if VERBOSE:
-        print("\n=== Question 4: det(J_L) and singular configurations ===")
+        print("\n=== det(J_L) and singular configurations ===")
         print("det(J_L) =")
         sp.pprint(det_JL)
         print("\nFactored det(J_L) =")
@@ -230,11 +228,11 @@ def compute_inverse_differential(J_L, VERBOSE=False):
 
 
 # ---------------------------------------------------------------------------
-# Part B: Calculate quintic polynomial coefficients
+# Calculate quintic polynomial coefficients
 # --------------------------------------------------------------------------- 
 def compute_quintic_polynomial(VERBOSE=False):
-    # Part B: Quintic polynomial s(tau) with via-point at tau = 0.5
-
+    # Quintic polynomial s(tau) with via-point at tau = 0.5
+    
     tau = sp.symbols("tau", real=True)
     a0, a1, a2, a3, a4, a5 = sp.symbols("a0 a1 a2 a3 a4 a5", real=True)
 
@@ -242,11 +240,17 @@ def compute_quintic_polynomial(VERBOSE=False):
     ds = sp.diff(s, tau)
 
     eqs = [
+        # s(0) = 0 (start at A)
         sp.Eq(s.subs(tau, 0), 0),
+        # s(0.5) = 1 (reach B at tau=0.5)
         sp.Eq(s.subs(tau, sp.Rational(1, 2)), 1),
+        # s(1) = 0 (return to A)
         sp.Eq(s.subs(tau, 1), 0),
+        # v(0) = 0
         sp.Eq(ds.subs(tau, 0), 0),
+        # v(0.5) = 0 (stop at B momentarily)
         sp.Eq(ds.subs(tau, sp.Rational(1, 2)), 0),
+        # v(1) = 0
         sp.Eq(ds.subs(tau, 1), 0),
     ]
 
@@ -256,7 +260,7 @@ def compute_quintic_polynomial(VERBOSE=False):
     ds_tau = sp.simplify(sp.diff(s_tau, tau))
 
     if VERBOSE:
-        print("\n=== Part B: Quintic polynomial s(tau) ===")
+        print("\n=== Quintic polynomial s(tau) ===")
         print("Solution for coefficients (a0..a5):")
         sp.pprint(sol)
         print("\ns(tau) =")
