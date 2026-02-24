@@ -1,5 +1,3 @@
-import numpy as np
-
 from scripts.theoretical_calculations import (
     compute_forward_kinematics,
     compute_jacobian,
@@ -7,16 +5,10 @@ from scripts.theoretical_calculations import (
     compute_quintic_polynomial,
 )
 
-from scripts.kinematic_simulation import (
-    setup_system,
-    plot_reach,
-    simulate,
-    plot_sim_results,
-    make_motion_gif,
-)
+from scripts.kinematic_simulation import RobotSimulation, SimulationConfig
 
 """
-This script serves as the main entry point for the project.
+This script exposes helper functions for symbolic derivations and simulations.
 """
 
 """
@@ -32,42 +24,18 @@ def run_theoretical_calculations():
     tau, s_tau, ds_tau = compute_quintic_polynomial(VERBOSE)
 
 """
-The function `run_simulation` executes the kinematic simulation.
-Global variables allow adjustment of system parameters.
-It includes initialization via `setup_system()` and execution via `simulate()`.
-Visualization options include:
-
-- `plot_reach`: Plots the robot's workspace and target points A & B.
-- `plot_results`: Plots position, velocity, joint angles, and angular velocities.
-- `make_motion_gif`: Generates a 3D animation of the motion.
+Run the high-level simulation pipeline (workspace plot, batch sim, GIF export).
 """
 def run_simulation():
-    # Define constants (movement period, sim period, link lengths, target points)
-    T = 3.0
-    dt = 1 / 30.0
-    link_lengths = [1, 1, 1, 1]
-    A = np.array([-1, +1, 2.5])
-    B = np.array([+1, -1, 2.5])
+    config = SimulationConfig()
+    simulation = RobotSimulation(config)
 
-    # Define Solution Choice
-    # 0: up(+), 1: down(-)
-    elbows = (0, 0)
+    simulation.plot_workspace()
+    results = simulation.run()
+    simulation.plot_results()
+    simulation.save_motion_gif("motion gifs/robot_motion_demo.gif")
 
-    SAVE = False
-    # Initialize all kinematic expressions and numeric parameters
-    setup_system(T, dt, link_lengths, A, B, elbows)
-
-    # Plot Robot Workspace limits
-    plot_reach(A, B, SAVE)
-
-    # Simulate system
-    results = simulate()
-
-    # P, V, q, qdot plots
-    plot_sim_results(results, SAVE)
-
-    # GIF and motion samples
-    make_motion_gif(results, SAVE)
+    return results
     
 if __name__ == "__main__":
     # run_theoretical_calculations()

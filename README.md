@@ -1,61 +1,72 @@
 # Robotic Arm Kinematics & Simulation
 
-This project implements the kinematic modeling and simulation of a 3-DOF robotic arm. It includes symbolic derivations of the forward and differential kinematics, as well as a numerical simulation of the robot executing a trajectory planned via quintic polynomials.
+A standalone reference implementation for modeling, simulating, and visualizing a 3-DOF robotic arm. The project couples symbolic modeling (forward/differential kinematics) with numerical simulation, trajectory planning, and high-quality visual outputs.
 
-## Project Overview
+> **Note:** The historical report `report_03122074.pdf` remains in Greek for archival reasons.
 
-The core objective is to model a robotic manipulator using the Denavit-Hartenberg (DH) convention and simulate its motion between two points in 3D space.
+## Quick Preview
 
-Key features include:
-- **Symbolic Computation**: Automating the derivation of Homogeneous Transformation Matrices and the Geometric Jacobian using `sympy`.
-- **Forward Kinematics**: Calculating the end-effector position based on joint angles.
-- **Inverse Kinematics**: Analytically solving for joint angles given a desired end-effector position.
-- **Trajectory Planning**: Utilizing a 5th-degree (quintic) polynomial to generate smooth paths with velocity constraints.
-- **3D Visualization**: Visualizing the robot's workspace and animating its movement using `matplotlib`.
+| Up-Up | Up-Down |
+| --- | --- |
+| ![Elbow Up-Up](motion%20gifs/robot_motion_UU.gif) | ![Elbow Up-Down](motion%20gifs/robot_motion_UD.gif) |
 
-## Folder Structure
+| Down-Up | Down-Down |
+| --- | --- |
+| ![Elbow Down-Up](motion%20gifs/robot_motion_DU.gif) | ![Elbow Down-Down](motion%20gifs/robot_motion_DD.gif) |
 
-- `main.py`: The entry point for running calculations and simulations.
-- `scripts/`: Contains the core logic modules.
-  - `theoretical_calculations.py`: Handles symbolic math for kinematics (DH parameters, Jacobian, etc.).
-  - `kinematic_simulation.py`: Implements the simulation loop and visualization tools.
-- `motion gifs/`: Directory for saving generated animations.
-- `report_03122074.pdf`: (Reference) Original project report in Greek.
+## Features
+
+- **Symbolic derivations** (via `sympy`) for DH transforms, Jacobians, and quintic trajectory coefficients.
+- **Modular simulation stack** split into control, core engine, and visualization modules.
+- **Batch plotting & GIF exports** for workspace projections, state trajectories, and motion snapshots.
+
+## Architecture Overview
+
+| Module | Responsibility |
+| --- | --- |
+| `scripts/control.py` | Trajectory planning primitives (currently quintic via-point interpolation). |
+| `scripts/simulation_engine.py` | Robot model, inverse kinematics, and discrete simulation loop. |
+| `scripts/visualization.py` | Workspace plots, result dashboards, GIF generation. |
+| `scripts/kinematic_simulation.py` | High-level orchestration (`RobotSimulation` wrapper, legacy helpers). |
+| `scripts/theoretical_calculations.py` | Symbolic derivations for kinematic expressions. |
 
 ## Requirements
 
-- Python 3.x
-- `numpy`
-- `sympy`
-- `matplotlib`
-- `tqdm`
+- Python 3.10+
+- `numpy`, `sympy`, `matplotlib`, `tqdm`
 
-You can install the dependencies using pip:
+Install dependencies:
+
 ```bash
 pip install numpy sympy matplotlib tqdm
 ```
 
-## How to Run
+## Usage
 
-### 1. Run the Simulation
-To visualize the robot's motion and generate plots for position, velocity, and joint angles:
+### 1. Run the simulation and export visuals
 
 ```bash
 python main.py
 ```
-*By default, this runs `run_simulation()`, which calculates the trajectory and displays the results.*
 
-### 2. Perform Theoretical Calculations
-To see the symbolic derivation of the kinematic matrices and polynomials:
+The script plots the workspace, runs the discrete simulation, renders state plots, and saves a motion GIF under `motion gifs/`.
 
-1. Open `main.py`.
-2. Uncomment the line `run_theoretical_calculations()`.
-3. Run the script:
-   ```bash
-   python main.py
-   ```
+### 2. Reproduce symbolic derivations
+
+Uncomment `run_theoretical_calculations()` in `main.py` and run the script to print the symbolic matrices and quintic coefficients.
+
+## Folder Structure
+
+- `main.py` – entry point exposing CLI helpers.
+- `scripts/`
+  - `control.py`
+  - `simulation_engine.py`
+  - `visualization.py`
+  - `kinematic_simulation.py`
+  - `theoretical_calculations.py`
+- `motion gifs/` – pre-rendered sample animations.
+- `report_03122074.pdf` – original course report (Greek).
 
 ## License
-This project is open-source.
 
-
+This project is open-source; feel free to adapt it for your own robotic arm experiments.
